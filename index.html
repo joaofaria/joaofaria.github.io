@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>João Faria: álbum de figurinhas dev</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Figtree:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    color-scheme: light dark;
+
+    --bg: #BFE5FF;
+    --dot: #9FCDEE;
+    --ink: #16143F;
+    --muted: #34326B;
+    --shadow: rgba(22, 20, 63, .85);
+
+    --orange: #FF7A1A;
+    --pink: #FF4F9A;
+    --lime: #B6F23C;
+    --violet: #9A74FF;
+    --yellow: #FFD93D;
+    --card-ink: #16143F;
+
+    --display: 'Bagel Fat One', 'Arial Rounded MT Bold', 'Trebuchet MS', system-ui, sans-serif;
+    --text: 'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15133F;
+      --dot: #24216A;
+      --ink: #F3F1FF;
+      --muted: #C9C5FF;
+      --shadow: rgba(0, 0, 0, .6);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15133F;
+    --dot: #24216A;
+    --ink: #F3F1FF;
+    --muted: #C9C5FF;
+    --shadow: rgba(0, 0, 0, .6);
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); scroll-behavior: smooth; }
+  *, *::before, *::after { box-sizing: inherit; }
+  body {
+    margin: 0;
+    font-family: var(--text);
+    color: var(--ink);
+    background-color: var(--bg);
+    background-image: radial-gradient(var(--dot) 1.6px, transparent 1.7px);
+    background-size: 24px 24px;
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 4px solid var(--pink); outline-offset: 3px; border-radius: 8px; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 24px 24px;
+    display: grid;
+    grid-template-columns: 1.15fr .85fr;
+    gap: 40px;
+    align-items: center;
+  }
+  h1 {
+    margin: 0 0 20px;
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(3.6rem, 13vw, 8.4rem);
+    line-height: .92;
+    color: var(--orange);
+    -webkit-text-stroke: .13em #fff;
+    paint-order: stroke fill;
+    filter: drop-shadow(5px 6px 0 var(--shadow));
+    letter-spacing: .01em;
+  }
+  h1 span { display: block; width: fit-content; }
+  h1 span:first-child { transform: rotate(-3deg); }
+  h1 span:last-child { transform: rotate(2deg) translateX(.35em); color: var(--pink); }
+  .tagline { font-size: 1.2rem; max-width: 36ch; margin: 0 0 24px; font-weight: 600; }
+  .actions { display: flex; flex-wrap: wrap; gap: 14px; }
+  .btn {
+    display: inline-block;
+    padding: 12px 22px;
+    border-radius: 999px;
+    font-weight: 800;
+    text-decoration: none;
+    border: 4px solid #fff;
+    box-shadow: 4px 5px 0 var(--shadow);
+    transition: transform .15s;
+  }
+  .btn:hover { transform: translate(-1px, -2px) rotate(-1deg); }
+  .btn.primary { background: var(--yellow); color: #16143F; }
+  .btn.secondary { background: var(--lime); color: #16143F; }
+
+  /* ---------- Figurinha principal (holográfica) ---------- */
+  .holo-wrap { perspective: 900px; justify-self: center; }
+  .holo {
+    --rx: 0deg; --ry: 0deg; --mx: 50%; --my: 20%;
+    position: relative;
+    width: min(300px, 78vw);
+    aspect-ratio: 5 / 7;
+    border: 8px solid #fff;
+    border-radius: 24px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: var(--card-ink);
+    overflow: hidden;
+    background: linear-gradient(120deg, #ff9ad5, #ffe27a, #9dffb8, #8fd3ff, #c9a2ff, #ff9ad5);
+    background-size: 280% 280%;
+    background-position: var(--mx) 50%;
+    transform: rotate(3deg) rotateX(var(--rx)) rotateY(var(--ry));
+    transition: transform .15s ease-out;
+    box-shadow: 8px 10px 0 var(--shadow);
+  }
+  .holo::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,.8), transparent 45%);
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+  .holo-top { display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: .9rem; }
+  .pill { background: #fff; border-radius: 999px; padding: 2px 12px; }
+  .mono {
+    align-self: center;
+    width: 54%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--card-ink);
+    color: var(--yellow);
+    display: grid; place-items: center;
+    font-family: var(--display);
+    font-size: clamp(2.6rem, 11vw, 4rem);
+    border: 5px solid #fff;
+    box-shadow: 4px 5px 0 rgba(22,20,63,.5);
+  }
+  .holo h2 { margin: 0; text-align: center; font-family: var(--display); font-weight: 400; font-size: 1.7rem; line-height: 1.1; }
+  .moves { margin: 0; padding: 0; list-style: none; font-size: .85rem; font-weight: 600; text-align: center; }
+  .rarity {
+    align-self: center;
+    font: inherit; font-weight: 800; font-size: .85rem;
+    background: #fff; color: var(--card-ink);
+    border: 3px solid var(--card-ink);
+    border-radius: 999px;
+    padding: 3px 14px;
+    cursor: pointer;
+    position: relative; z-index: 1;
+  }
+  .stats { margin-top: auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; position: relative; z-index: 1; }
+  .stats div { background: rgba(255,255,255,.8); border-radius: 12px; padding: 4px 2px; text-align: center; line-height: 1.1; }
+  .stats b { display: block; font-family: var(--display); font-weight: 400; font-size: 1.5rem; }
+  .stats span { font-size: .72rem; font-weight: 600; }
+
+  /* ---------- Álbum ---------- */
+  .album { max-width: 1100px; margin: 0 auto; padding: 40px 24px 56px; }
+  .album h2 { font-family: var(--display); font-weight: 400; font-size: clamp(2rem, 6vw, 3rem); margin: 0 0 6px; line-height: 1.1; }
+  .album .hint { margin: 0 0 32px; color: var(--muted); font-weight: 600; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 32px 28px; }
+  @media (min-width: 760px) { .wide { grid-column: span 2; } }
+
+  .sticker {
+    --r: 0deg; --c: var(--orange);
+    display: flex;
+    transform: rotate(var(--r));
+    animation: pop .6s cubic-bezier(.2, 1.5, .4, 1) both;
+    animation-delay: calc(var(--i) * 110ms + 150ms);
+  }
+  @keyframes pop {
+    from { opacity: 0; transform: rotate(var(--r)) scale(.55) translateY(24px); }
+    to   { opacity: 1; transform: rotate(var(--r)); }
+  }
+  .inner {
+    flex: 1;
+    display: grid;
+    min-height: 340px;
+    transform-style: preserve-3d;
+    transition: transform .6s cubic-bezier(.3, 1.3, .5, 1);
+  }
+  .sticker[data-flipped="true"] .inner { transform: rotateY(180deg); }
+  .face {
+    grid-area: 1 / 1;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    display: flex; flex-direction: column; gap: 12px;
+    padding: 20px;
+    border: 7px solid #fff;
+    border-radius: 28px;
+    color: var(--card-ink);
+    box-shadow: 6px 8px 0 var(--shadow);
+  }
+  .front { background: var(--c); cursor: pointer; }
+  .back {
+    transform: rotateY(180deg);
+    background: color-mix(in srgb, var(--c) 22%, #fff);
+    font-size: .98rem;
+  }
+  .face h3 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 1.8rem; line-height: 1.1; overflow-wrap: anywhere; }
+  .face p { margin: 0; }
+  .face .lead { font-size: 1.15rem; font-weight: 600; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { border: 2px solid var(--card-ink); border-radius: 999px; padding: 1px 10px; font-weight: 800; font-size: .85rem; background: rgba(255,255,255,.7); }
+  .links { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; }
+  .links a { font-weight: 800; }
+  .flip {
+    margin-top: auto; align-self: flex-start;
+    font: inherit; font-weight: 800;
+    color: var(--card-ink); background: #fff;
+    border: 3px solid var(--card-ink);
+    border-radius: 999px;
+    padding: 6px 16px;
+    cursor: pointer;
+  }
+  .flip:hover { background: var(--yellow); }
+
+  .slot {
+    --r: -1.5deg;
+    display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 12px;
+    min-height: 340px;
+    padding: 24px;
+    border: 4px dashed var(--ink);
+    border-radius: 28px;
+    transform: rotate(var(--r));
+    animation: pop .6s cubic-bezier(.2, 1.5, .4, 1) both;
+    animation-delay: calc(var(--i) * 110ms + 150ms);
+  }
+  .slot h3 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 1.8rem; line-height: 1.1; }
+  .slot p { margin: 0; font-weight: 600; }
+
+  footer { max-width: 1100px; margin: 0 auto; padding: 8px 24px 48px; color: var(--muted); font-weight: 600; font-size: .95rem; }
+
+  @media (max-width: 760px) {
+    .hero { grid-template-columns: 1fr; padding-top: 32px; }
+    .holo-wrap { order: -1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .sticker, .slot { animation: none; }
+    .inner, .holo, .btn { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div>
+    <h1><span>João</span><span>Faria</span></h1>
+    <p class="tagline">App de processo seletivo, sistema de vendas feito em disciplina e uma turma de repositórios do JumpServer. Vire as figurinhas para ver o que tem atrás de cada uma.</p>
+    <div class="actions">
+      <a class="btn primary" href="https://github.com/joaofaria" target="_blank" rel="noopener">Ver perfil no GitHub</a>
+      <a class="btn secondary" href="#album">Abrir o álbum</a>
+    </div>
+  </div>
+
+  <div class="holo-wrap">
+    <div class="holo" id="holo">
+      <div class="holo-top"><span class="pill">Nº 001</span><span class="pill">joaofaria</span></div>
+      <div class="mono" aria-hidden="true">JF</div>
+      <h2>João Faria</h2>
+      <ul class="moves">
+        <li>Ataque: compilar de primeira</li>
+        <li>Defesa: git revert</li>
+      </ul>
+      <button class="rarity" id="rarity" type="button">Raridade: ultra-commitada</button>
+      <div class="stats">
+        <div><b>11</b><span>repositórios</span></div>
+        <div><b>5</b><span>seguidores</span></div>
+        <div><b>6</b><span>em destaque</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="album" id="album">
+  <h2>O álbum do João</h2>
+  <p class="hint">Toque numa figurinha para virar.</p>
+
+  <div class="grid">
+
+    <article class="sticker" id="s-zklub" style="--c: var(--orange); --r: -2deg; --i: 0">
+      <div class="inner">
+        <div class="face front">
+          <div class="chips"><span class="chip">React Native</span><span class="chip">Android</span></div>
+          <h3>zKlub</h3>
+          <p class="lead">O app que nasceu como teste de seleção.</p>
+          <button class="flip" type="button" aria-expanded="false">Virar figurinha</button>
+        </div>
+        <div class="face back">
+          <p>Aplicativo feito para o processo seletivo da ZenKlub. Os dados vêm de um db.json servido pelo my-json-server.</p>
+          <p>Para rodar: <b>npm install</b> e depois <b>react-native run-android</b>.</p>
+          <ul class="links">
+            <li><a href="https://github.com/joaofaria/zKlub" target="_blank" rel="noopener">Ver o repositório</a></li>
+            <li><a href="https://github.com/joaofaria/jsonFile-main-db" target="_blank" rel="noopener">Ver o banco de dados</a></li>
+          </ul>
+          <button class="flip" type="button" aria-expanded="true">Voltar</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="sticker" id="s-posmart" style="--c: var(--lime); --r: 1.5deg; --i: 1">
+      <div class="inner">
+        <div class="face front">
+          <div class="chips"><span class="chip">Python</span><span class="chip">Django</span></div>
+          <h3>TPENG2</h3>
+          <p class="lead">Vendas, estoque e funcionários num sistema só.</p>
+          <button class="flip" type="button" aria-expanded="false">Virar figurinha</button>
+        </div>
+        <div class="face back">
+          <p>Trabalho da disciplina de Engenharia de Software II. O projeto tem módulos de administração, estoque, funcionários, produtos e vendas, e uma pasta chamada POSmart.</p>
+          <p>Licença MIT.</p>
+          <ul class="links">
+            <li><a href="https://github.com/joaofaria/TPENG2" target="_blank" rel="noopener">Ver o repositório</a></li>
+          </ul>
+          <button class="flip" type="button" aria-expanded="true">Voltar</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="sticker" id="s-json" style="--c: var(--yellow); --r: -1deg; --i: 2">
+      <div class="inner">
+        <div class="face front">
+          <div class="chips"><span class="chip">JSON</span><span class="chip">my-json-server</span></div>
+          <h3>jsonFile-main-db</h3>
+          <p class="lead">O banco de dados que cabe num arquivo.</p>
+          <button class="flip" type="button" aria-expanded="false">Virar figurinha</button>
+        </div>
+        <div class="face back">
+          <p>O db.json que alimenta o zKlub, servido pela plataforma my-json-server sugerida no processo seletivo.</p>
+          <ul class="links">
+            <li><a href="https://github.com/joaofaria/jsonFile-main-db" target="_blank" rel="noopener">Ver o repositório</a></li>
+          </ul>
+          <button class="flip" type="button" aria-expanded="true">Voltar</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="sticker wide" id="s-jump" style="--c: var(--violet); --r: 1deg; --i: 3">
+      <div class="inner">
+        <div class="face front">
+          <div class="chips"><span class="chip">Python</span><span class="chip">Vue</span><span class="chip">JavaScript</span></div>
+          <h3>Trio JumpServer</h3>
+          <p class="lead">Três repositórios na versão 3.10.x.</p>
+          <button class="flip" type="button" aria-expanded="false">Virar figurinha</button>
+        </div>
+        <div class="face back">
+          <p>São jumpserver-v3.10.9 (Python), lina-v3.10.7 (Vue) e luna-v3.10.7 (JavaScript). Eles não têm descrição no perfil; pelos nomes, parecem ser partes do JumpServer, plataforma open source de acesso privilegiado.</p>
+          <ul class="links">
+            <li><a href="https://github.com/joaofaria/jumpserver-v3.10.9" target="_blank" rel="noopener">jumpserver-v3.10.9</a></li>
+            <li><a href="https://github.com/joaofaria/lina-v3.10.7" target="_blank" rel="noopener">lina-v3.10.7</a></li>
+            <li><a href="https://github.com/joaofaria/luna-v3.10.7" target="_blank" rel="noopener">luna-v3.10.7</a></li>
+          </ul>
+          <button class="flip" type="button" aria-expanded="true">Voltar</button>
+        </div>
+      </div>
+    </article>
+
+    <div class="slot" style="--i: 4">
+      <h3>Falta colar</h3>
+      <p>Há mais 5 repositórios no GitHub que não aparecem entre os destaques.</p>
+      <a class="btn secondary" href="https://github.com/joaofaria?tab=repositories" target="_blank" rel="noopener">Ver todos</a>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  Página feita com os dados públicos de github.com/joaofaria.
+</footer>
+
+<script>
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Virar figurinhas
+  document.querySelectorAll('.sticker').forEach(function (s) {
+    var front = s.querySelector('.front');
+    var back = s.querySelector('.back');
+    back.inert = true;
+    function set(flipped) {
+      s.dataset.flipped = flipped ? 'true' : 'false';
+      front.inert = flipped;
+      back.inert = !flipped;
+      var target = (flipped ? back : front).querySelector('.flip');
+      if (target) target.focus({ preventScroll: true });
+    }
+    front.addEventListener('click', function () { set(true); });
+    back.querySelector('.flip').addEventListener('click', function () { set(false); });
+  });
+
+  // Inclinar a figurinha holográfica
+  var holo = document.getElementById('holo');
+  if (!reduce) {
+    holo.addEventListener('pointermove', function (e) {
+      var r = holo.getBoundingClientRect();
+      var x = (e.clientX - r.left) / r.width;
+      var y = (e.clientY - r.top) / r.height;
+      holo.style.setProperty('--ry', ((x - .5) * 22) + 'deg');
+      holo.style.setProperty('--rx', ((.5 - y) * 22) + 'deg');
+      holo.style.setProperty('--mx', (x * 100) + '%');
+      holo.style.setProperty('--my', (y * 100) + '%');
+    });
+    holo.addEventListener('pointerleave', function () {
+      holo.style.setProperty('--ry', '0deg');
+      holo.style.setProperty('--rx', '0deg');
+      holo.style.setProperty('--mx', '50%');
+      holo.style.setProperty('--my', '20%');
+    });
+  }
+
+  // Trocar raridade
+  var rarities = ['ultra-commitada', 'lendária', 'brilhante', 'edição limitada', 'compila no meu PC'];
+  var idx = 0;
+  var rarityBtn = document.getElementById('rarity');
+  rarityBtn.addEventListener('click', function () {
+    idx = (idx + 1) % rarities.length;
+    rarityBtn.textContent = 'Raridade: ' + rarities[idx];
+  });
+</script>
+</body>
+</html>
